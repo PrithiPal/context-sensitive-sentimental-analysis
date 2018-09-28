@@ -1,0 +1,15 @@
+EXPERIMENTAL RESULTS : 
+
+
+1. At default settings : 
+    - "Arthur is the king ." 
+        (TOP (S1 (NP (Proper Arthur) ) (_VP (VP (VerbT is) (NP (Det the) (Nbar (Noun king) ))) (Punc .))) )
+        -3.7863679540999504
+        
+        
+    - "five strangers are at the Round Table ."
+        (TOP (S2 (_Misc (Misc five) (_Misc (Misc strangers) (_Misc (Misc are) (_Prep (Prep at) (_Det (Det the) (_Misc (Misc (_Round Round) (_Table Table)) (_Misc (Misc .) ))))))) ) )
+        -9.807330330570931
+        
+    - example_sentences.txt
+        -10.2762

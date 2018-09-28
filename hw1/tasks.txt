@@ -1,0 +1,20 @@
+CMPT 419 HW1 
+
+Objective : Get the best possible cross-entropy score on the sentences dataset.
+
+Tasks : 
+
+1.	Weight adjustment : 
+		S1.gr and S2.gr : 
+			To solve this, we can write a script that looks the sample sentences, and assign the counts for each rule (NT->NT NT) and after obtaining count, we can calculate probability through formula : count / total-count where total-count is the count total of all rules starting with same non-terminal (left side letter)
+		Vocab.gr : 
+		Somehow use the language model (Unigram model) to assign weights to the individual vocabulary words.
+2.	New Grammar writing (S1 and S2)
+		S1 is always high probability than S2. So we have to know which grammar rules to add to which file ? 
+3.	Additional words from allowed_words to Vocab.gr
+		Anoop said that new words can be added from allowed_word to Vocab but not to allowed_words(because it is superset)
+4.	Part of Speech (POS) in Vocab.gr
+		Use nltk to find the POS (NNP,Vp etc..) and replace misc with it in vocab.gr
+
+Evaluation
+With each new addition, try running the model (python pcfg_parse_gen.py) and see how the cross-entropy changes. 
