@@ -15,4 +15,15 @@ EXPERIMENTAL RESULTS :
         -10.2762
         
         
-    
+2. with S2_new.gr and Vocab_new.gr      
+        - S1.gr : Original file
+        - S2_new.gr : Have the new POS rules in place of Misc
+        - Vocab.gr : Have the new vocabulary from allowed_words and POS for all of them.
+        
+        - example_sentences.txt
+        -129.23
+        
+        [After fixing the formats of the two files]
+        -28.8752
+        
+        {Problem : the , are not parsing.}
