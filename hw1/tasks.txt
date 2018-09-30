@@ -11,14 +11,16 @@ Tasks :
    1. S1.gr 
       1. To solve this, we can write a script that looks the sample sentences, and assign the counts for each rule (NT->NT NT) and after obtaining count, we can calculate probability through formula : count / total-count where total-count is the count total of all rules starting with same non-terminal (left side letter)
       2. Adjust the weights from the sentences in example_sentences 
-      3. Need a reverse_parser to take tree as input and return rules of the form A -> B C (Use nltk.Tree.from_string(“TREE”)) or the Ekam’s photo on watsapp
+      3. Need a reverse_parser to take tree as input and return rules of the form A -> B C (Use nltk.Tree.from_string(“TREE”)) or the Ekam’s photo on whatsapp 
      B S2.gr.
-* Use Bigram model and adjust weights again from example_sentences and devset.txt  [PRITHI IS WORKING]
-* Set new POS rules in NewVocab.gr to S2.gr [PRITHI IS WORKING]
+* Weight Readjustment : 
+   * For A -> B C, we can get counts of this rules only from tree data (devset.txt)
+   * For B C, the count can be computed from Bi-Grams from text based sampling (example_sentences)
+* Set new POS rules in NewVocab.gr to S2.gr [DONE]
              C. Vocab.gr : 
-      1. Somehow use the language model (Unigram model) to assign weights to the individual vocabulary words. Use the nltk.FreqDist to get the single tokens(words) and their counts.
+      1. Somehow use the language model (Unigram model) to assign weights to the individual vocabulary words. []nltk.FreqDist to get the single tokens(words) and their counts. [PRITHI WORKING]
       2. [DONE] Replace Misc with POS 
-      3. Add POS for all the words in allowed_words to Vocab.gr
+      3. Add POS for all the words in allowed_words to Vocab.gr [DONE]
 1. New Grammar writing (S1 and S2)
    1. S1 is always high probability than S2. So we have to know which grammar rules to add to which file ? 
 
