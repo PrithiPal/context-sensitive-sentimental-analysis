@@ -1,4 +1,4 @@
-﻿CMPT 419 HW1 
+CMPT 419 HW1 
 
 
 Objective : Get the best possible cross-entropy score on the sentences dataset.
