@@ -46,11 +46,14 @@ def getRulesFromDevTrees(strFilename):
 
 	return treelist
 
-# usage:  makeRulesFromTreeList(getRulesFromDevTrees("devset.tree"))
+# usage:  makeRulesFromTreeList(getRulesFromDevTrees("devset.trees"))
 def makeRulesFromTreeList(lstGroupOfTrees):
 	lstRules=[]
 	for item in lstGroupOfTrees:
 		tr = Tree.fromstring(item)
-		lstRules.append(tr.productions())
+		# lstRules.append(tr.productions())
+		lstRules = lstRules + tr.productions()
 
-	return lstRules
+
+	# make rules unique(no duplicates)
+	return list(set(lstRules))
