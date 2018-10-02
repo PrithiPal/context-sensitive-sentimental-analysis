@@ -18,7 +18,7 @@ def stripNewLines(strTree):
 	print(strTree)
 
 
-def getRulesFromDevTrees(strFilename):
+def getTreesFromDevset(strFilename):
 	treelist=[]
 	onesentence=""
 	with open(strFilename) as file:
@@ -46,8 +46,8 @@ def getRulesFromDevTrees(strFilename):
 
 	return treelist
 
-# usage:  makeRulesFromTreeList(getRulesFromDevTrees("devset.trees"))
-def makeRulesFromTreeList(lstGroupOfTrees):
+# usage:  makeRulesFromTreeList(getTreesFromDevset("devset.trees"))
+def makeRulesFromTreeList(lstGroupOfTrees, isDuplicate=False):
 	lstRules=[]
 	for item in lstGroupOfTrees:
 		tr = Tree.fromstring(item)
@@ -56,4 +56,23 @@ def makeRulesFromTreeList(lstGroupOfTrees):
 
 
 	# make rules unique(no duplicates)
-	return list(set(lstRules))
+	if not isDuplicate:
+		return list(set(lstRules))
+	else:
+		return lstRules
+
+
+###################################################################################
+# write rules for "devset.trees" to a file (for easier copy-paste/editing)
+def writeRulesToFile(filename, isDups=False):
+	if isDups:
+		filename=filename+"WITHDUPS"
+	else:
+		filename=filename+"WITHOUTDUPS"
+	rules = makeRulesFromTreeList(getTreesFromDevset("devset.trees"), isDuplicate=isDups)
+	with open(filename, "w") as file:
+		for rule in rules:
+			line = "1" + "    " + str(rule) + '\n'
+			file.write(line)
+
+###################################################################################
