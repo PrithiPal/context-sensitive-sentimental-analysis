@@ -74,5 +74,44 @@ def writeRulesToFile(filename, isDups=False):
 		for rule in rules:
 			line = "1" + "    " + str(rule) + '\n'
 			file.write(line)
-
 ###################################################################################
+
+# Separating rules and terminals from the devset.trees
+# returns a tuple of lists (terminal list and rules list)
+# NOTE: rules is still not in CNF
+def getRulesAndTerminals(strFilename, isWriteToFile=False):
+	terminals=[]
+	rules=[]
+	with open(strFilename) as file:
+		lines = file.readlines()
+		for currentline in lines:
+			currentline = currentline.partition("\n")[0]
+			if currentline[-1] == "'":
+				terminals.append(currentline)
+			else:
+				rules.append(currentline)
+
+
+	terminals = list(set(terminals))
+	rules = list(set(rules))
+	# sort to be easier to read
+	terminals.sort()
+	rules.sort()
+
+	# write to file for easier copy-paste/editing
+	file_devset_terminals="DevSetTerminals.txt"
+	file_devset_rules="DevSetRules_NONCNF.txt"
+	if isWriteToFile:
+		with open(file_devset_terminals, "w") as file:
+			for item in terminals:
+				line = item + '\n'
+				file.write(line)
+
+		with open(file_devset_rules, "w") as file:
+			for item in rules:
+				line = item + '\n'
+				file.write(line)
+
+
+	return (terminals, rules)
+
