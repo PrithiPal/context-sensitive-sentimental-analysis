@@ -5158,10 +5158,10 @@
 1    FW -> 'lu'
 1    FW -> 'la'
 1    NNP -> 'Ramper'
-1    ( -> (
+1    ( -> '('
 1    VB -> 'sp'
 1    . -> '?'
-1    ) -> )
+1    ) -> ')'
 1    S -> VP .
 1    VP -> VP CC VP
 1    VP -> NNP
@@ -5755,21 +5755,21 @@
 1    JJ -> 'reasonable'
 1    . -> '.'
 1    NP -> ( NNP NNP NNP . ) NN .
-1    ( -> (
+1    ( -> '('
 1    NNP -> 'Fetchez'
 1    NNP -> 'la'
 1    NNP -> 'vache'
 1    . -> '.'
-1    ) -> )
+1    ) -> ')'
 1    NN -> 'wha'
 1    . -> '?'
 1    S -> ( NNP NNP NN . )
-1    ( -> (
+1    ( -> '('
 1    NNP -> 'Fetchez'
 1    NNP -> 'la'
 1    NN -> 'vache'
 1    . -> '!'
-1    ) -> )
+1    ) -> ')'
 1    S -> SBAR , ADVP NP VP :
 1    SBAR -> IN S
 1    IN -> 'If'

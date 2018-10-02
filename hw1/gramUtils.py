@@ -86,7 +86,8 @@ def getRulesAndTerminals(strFilename, isWriteToFile=False):
 		lines = file.readlines()
 		for currentline in lines:
 			currentline = currentline.partition("\n")[0]
-			if currentline[-1] == "'":
+			# include parenthesis just in case
+			if currentline[-1] == "'" or currentline[-1] == "\"" or currentline[-1] == "(" or currentline[-1] == ")":
 				terminals.append(currentline)
 			else:
 				rules.append(currentline)
