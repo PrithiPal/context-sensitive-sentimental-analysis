@@ -19,7 +19,7 @@ def stripNewLines(strTree):
 
 
 def getRulesFromDevTrees(strFilename):
-	treeset=""
+	treelist=[]
 	onesentence=""
 	with open(strFilename) as file:
 		lines = file.readlines()
@@ -31,7 +31,26 @@ def getRulesFromDevTrees(strFilename):
 			if currentline[0].isspace():
 				onesentence = onesentence + " " + currentline.strip()
 			else:
-				treeset = treeset + onesentence + '\n' + currentline 
-				onesentence = ""
+				if len(onesentence) > 0:
+					treelist[-1] = treelist[-1] + onesentence
+					treelist.append(currentline)
+					# treeset = treeset + onesentence + '\n' + currentline 
+					onesentence = ""
+				else:
+					treelist.append(currentline) # = treeset + onesentence + '\n' + currentline 
 
-	return treeset
+	# eof (last tree) -- tedious algorithm but whatever (for now)
+	if len(onesentence) > 0:
+		treelist[-1] = treelist[-1] + onesentence
+		onesentence = ""
+
+	return treelist
+
+# usage:  makeRulesFromTreeList(getRulesFromDevTrees("devset.tree"))
+def makeRulesFromTreeList(lstGroupOfTrees):
+	lstRules=[]
+	for item in lstGroupOfTrees:
+		tr = Tree.fromstring(item)
+		lstRules.append(tr.productions())
+
+	return lstRules
