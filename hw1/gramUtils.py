@@ -73,7 +73,7 @@ def writeRulesToFile(filename, isDups=False):
 	rules = makeRulesFromTreeList(getTreesFromDevset("devset.trees"), isDuplicate=isDups)
 	with open(filename, "w") as file:
 		for rule in rules:
-			line = "1" + "    " + str(rule) + '\n'
+			line = "1" + "   " + str(rule) + '\n'
 			file.write(line)
 ###################################################################################
 
