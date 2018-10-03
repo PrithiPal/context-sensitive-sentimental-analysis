@@ -51,6 +51,7 @@ def makeRulesFromTreeList(lstGroupOfTrees, isDuplicate=False):
 	lstRules=[]
 	for item in lstGroupOfTrees:
 		tr = Tree.fromstring(item)
+		tr.chomsky_normal_form()  # <<-- *IMPORTANT. TO MAKE IT IN CNF FORM*
 		# lstRules.append(tr.productions())
 		lstRules = lstRules + tr.productions()
 
@@ -79,7 +80,7 @@ def writeRulesToFile(filename, isDups=False):
 # Separating rules and terminals from the devset.trees
 # returns a tuple of lists (terminal list and rules list)
 # NOTE: rules is still not in CNF
-def getRulesAndTerminals(strFilename, isWriteToFile=False):
+def getRulesAndTerminals(strFilename, isWriteToFile=False): #, isTest=True):
 	terminals=[]
 	rules=[]
 	with open(strFilename) as file:
@@ -93,6 +94,7 @@ def getRulesAndTerminals(strFilename, isWriteToFile=False):
 				rules.append(currentline)
 
 
+	# remove rule duplicates
 	terminals = list(set(terminals))
 	rules = list(set(rules))
 	# sort to be easier to read
@@ -100,8 +102,14 @@ def getRulesAndTerminals(strFilename, isWriteToFile=False):
 	rules.sort()
 
 	# write to file for easier copy-paste/editing
+	# if isTest:
+	# 	file_devset_terminals="TESTDevSetTerminals.txt"
+	# 	file_devset_rules="TESTDevSetRules_INCNF.txt"
+	# else:
+	# 	file_devset_terminals="DevSetTerminals.txt"
+	# 	file_devset_rules="DevSetRules_INCNF.txt"
 	file_devset_terminals="DevSetTerminals.txt"
-	file_devset_rules="DevSetRules_NONCNF.txt"
+	file_devset_rules="DevSetRules_INCNF.txt"
 	if isWriteToFile:
 		with open(file_devset_terminals, "w") as file:
 			for item in terminals:
