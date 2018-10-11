@@ -1,3 +1,18 @@
+##################################
+#INSTRUCTIONS:
+
+Use 'prithi' branch instead of master
+Files needed: 
+
+
+S1_new.gr
+S2_new.gr
+NewVocab.gr
+final_cgw.ipynb
+
+
+##################################
+
 Competitive Grammar Writing in Python
 =====================================
 
