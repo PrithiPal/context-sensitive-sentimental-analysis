@@ -1,0 +1,3 @@
+- helped plan out in the beginning
+- worked on extracting rules from treesfile but didn't work out correctly
+- helped Prithi on finalizing the notebook
