@@ -1,4 +1,0 @@
-- helped plan out next steps and ways to solve the problem
-- got together with Prithi and worked on implementations of functions 3 times for at least 4-5 hours
-- Worked on the neural network model but we didn't end up using it since it took too long
-- helped implement a few helper functions
