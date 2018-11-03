@@ -142,11 +142,14 @@ def perc_test(feat_vec, labeled_list, feat_list, tagset, default_tag):
     # recover the best sequence using backpointers
     maxvalue = get_maxvalue(viterbi[N-3])
     best_tag = maxvalue[0]
+    print(output)
     for i in range(N-3, 1, -1):
         output.insert(0,best_tag)
+        print(output)
         (value, backpointer) = viterbi[i][best_tag]
         best_tag = backpointer
 
+    print("end", output)
     return output
 
 def conll_format(output, labeled_list):
@@ -206,6 +209,7 @@ if __name__ == '__main__':
     tagset = read_tagset(opts.tagsetfile)
     print("reading data ...", file=sys.stderr)
     test_data = read_labeled_data(opts.inputfile, opts.featfile, verbose=False)
+    print("len test_data: ", len(test_data[1][0]), file=sys.stderr)
     print("done.", file=sys.stderr)
     feat_vec = perc_read_from_file(opts.modelfile)
     perc_testall(feat_vec, test_data, tagset)
