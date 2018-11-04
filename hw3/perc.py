@@ -209,4 +209,3 @@ if __name__ == '__main__':
     print("done.", file=sys.stderr)
     feat_vec = perc_read_from_file(opts.modelfile)
     perc_testall(feat_vec, test_data, tagset)
-
