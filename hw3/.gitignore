@@ -4,3 +4,7 @@ output*
 chunk.py
 *.pyc
 __pycache__
+venv
+.DS_Store
+*.egg-info
+.ipynb_checkpoints
