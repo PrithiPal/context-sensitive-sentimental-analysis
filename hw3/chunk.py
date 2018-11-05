@@ -52,24 +52,41 @@ def perc_train(train_data, tagset, numepochs):
     for (labeled_list, feat_list) in train_data:
         # **THE FIRST ITEM IN THE TUPLE IS THE LABELED LISTS**
         
-        # $$ WORDS FOR THE CURRENT SENTENCE $$
-        # >> x[1:n]
-        for itm in labeled_list:
-            words.append(itm.split()[0])
-        print(words)
-        # $$$$
+        # # $$ WORDS FOR THE CURRENT SENTENCE $$
+        # # >> x[1:n]
+        # for itm in labeled_list:
+        #     words.append(itm.split()[0])
+        # print(words)
+        # # $$$$
 
-        # $$ OUTPUT LABELS FOR THE CURRENT SENTENCE $$
-        # >> t[1:n]
-        for itm in labeled_list:
-            labels.append(itm.split()[-1])
-        print(labels)
-        # $$$$
+        # # $$ OUTPUT LABELS FOR THE CURRENT SENTENCE $$
+        # # >> t[1:n]
+        # for itm in labeled_list:
+        #     labels.append(itm.split()[-1])
+        # print(labels)
+        # # $$$$
 
         # print(labeled_list)
 
-        # for ft in feat_list:
-        #     print(ft)
+        print("Len of feat_list: ", len(feat_list))
+
+        # $$ GO THROUGH EACH FEATURE, STORE IN feat_vec $$
+        count=0
+        testbool=False
+        print(feat_list[2])
+        for ft in feat_list:
+            # print(ft)
+            # PUT FEATURE IF NOT IN THE feat_vec yet
+            if ft not in feat_vec.keys():
+                testbool = testbool or False
+                feat_vec[ft] = 0
+            else:
+                testbool = testbool or True
+
+            count+=1
+        print(count)
+        print(testbool)
+        # $$$$
 
         # >> Use Viterbi algorthim (perc_test) here on the labeled sentence
         # output = perc.perc_test(feat_vec, labeled_list, feat_list, tagset, tagset[0])
@@ -82,10 +99,10 @@ def perc_train(train_data, tagset, numepochs):
         j+=1
 
 
-    print("Printing feat_vec...")
-    print("len feat_vec: ", len(feat_vec))
-    for itm in feat_vec:
-        print(itm)
+    # print("Printing feat_vec...")
+    # print("len feat_vec: ", len(feat_vec))
+    # for itm in feat_vec:
+    #     print(itm)
 
     return feat_vec
 
@@ -112,5 +129,6 @@ if __name__ == '__main__':
     # print("len train_data: ", len(train_data))
     print("done.", file=sys.stderr)
     feat_vec = perc_train(train_data, tagset, int(opts.numepochs))
+    # print(feat_vec)
     perc.perc_write_to_file(feat_vec, opts.modelfile)
 
