@@ -177,13 +177,26 @@ if __name__ == '__main__':
     train_data = perc.read_labeled_data(opts.trainfile, opts.featfile, verbose=False)
     
     print("done.", file=sys.stderr)
-    feat_vec = perc_train(train_data, tagset, int(opts.numepochs))
-    F={}
+    print(type(feat_vec))
+    #F={} 
+    #TESTING
+    F= defaultdict(int)
     
     for i in range(len(feat_vec)) : 
         a=feat_vec[i].copy()
         F.update(a)
     
+    print(type(F))
     feat_vec2=F.copy()
+    print(type(feat_vec2))
+    '''
+    cnt_item = 0
+    for key, value in feat_vec2.items() :
+        print (key, value)
+        cnt_item = cnt_item +1
+
+        if cnt_item == 30:
+            break
+    '''
     perc.perc_write_to_file(feat_vec2, opts.modelfile)
 
