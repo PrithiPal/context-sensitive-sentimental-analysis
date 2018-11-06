@@ -45,85 +45,123 @@ def perc_train(train_data, tagset, numepochs):
     t1=time.time()
     FEATURE_VEC_SENT=[] 
     FEATURE_DIC={}
-    GLOBAL_DIC=[]
-    
     default_tag=tagset[0]
-    
+    WEIGHT_VECTOR=[]
+
+    history_list =[]
     e=0
     for epoch in range(numepochs) : 
         print("epoch {}".format(e))
-        
+        MISTAKES=0
         sent_ind=0
-        
         ## ONE SENTENCE PARSING 
+        epoch_start=time.time()
+        
         for (sent_labels,sent_features) in train_data : 
-            #print('sent ',sent_ind)
             
-            FEATURE_DIC={}
-            if sent_ind==0 : 
-                GLOBAL_DIC=FEATURE_DIC
-
+            #print("sentence=",sent_labels)
+            #argmax_tag=[]
+             
+            if epoch==0 : 
+                FEATURE_DIC={}
+            elif epoch>0: 
+                FEATURE_DIC=WEIGHT_VECTOR[sent_ind]
             
-            argmax_tag=perc.perc_test(GLOBAL_DIC, sent_labels, sent_features, tagset, default_tag)           
+          
             
+            argmax_tag=perc.perc_test(FEATURE_DIC, sent_labels, sent_features, tagset, default_tag)   
             
+                
+            labels = copy.deepcopy(sent_labels)
+            labels.insert(0, '_B-1 _B-1 _B-1')
+            labels.insert(0, '_B-2 _B-2 _B-2') # first two 'words' are _B-2 _B-1
+            labels.append('_B+1 _B+1 _B+1')
+            labels.append('_B+2 _B+2 _B+2') # last two 'words' are _B+1 _B+2 
+            #N is the number of words in a sentence 
+            N = len(labels)   
             
-            ## for each word
-            for w,i in zip(sent_labels,range(len(sent_labels))) : 
+            SUM=0
+            ## for each word chunk
+            feat_index=0
+            j=0
+            for i in range(2, N-2):
+                
+                (feat_index, feats) = perc.feats_for_word(feat_index, sent_features)  
+               # print(feats)
+                fields = labels[i].split()    
                 
                 
-                
-                (feat_index, feats) = perc.feats_for_word(i, sent_features)    
-                actual_tag=re.findall(r"([A-Z\-]*)$",w)[0]
-                word=re.findall(r"^([A-Za-z]*) *",w)[0]
-                #print("word_index = {}, word = {}, actual_tag = {}, argmax_tag= {}".format(i,word,actual_tag,argmax_tag[i]))
+                word = fields[0]
+                actual_tag=fields[2]    
                
-                ## for each (word_feature,true_tag)
-                local_keys=FEATURE_DIC.keys()
-                global_keys=GLOBAL_DIC.keys()
+        
+                #print("word_index = {}, word = {}, actual_tag = {}, argmax_tag= {}".format(i,word,actual_tag,argmax_tag[i])
+                amax_tag=argmax_tag[j]
                 
-                for (f,t) in itertools.product(feats,[actual_tag]) : 
-                    #print("({},{}) {}".format(f,t,argmax_tag[i]))
-                    if t!= argmax_tag[i] : 
-                        #print("yes")  
-                        if (f,t) in local_keys : 
-                            FEATURE_DIC[(f,t)]=FEATURE_DIC[f,t]+1
-                        else : 
-                            FEATURE_DIC[(f,t)]=1  
-                        if (f,argmax_tag[i]) in local_keys : 
-                            FEATURE_DIC[(f,argmax_tag[i])]=FEATURE_DIC[(f,argmax_tag[i])]-1
-                        else : 
-                            FEATURE_DIC[(f,argmax_tag[i])]=-1
-                
-            #print(list(GLOBAL_DIC.values())[:10])
-                            
-            ## appending to global feature vector
-            
-            local_keys=FEATURE_DIC.keys()
-            global_keys=GLOBAL_DIC.keys()
-            
-            t_start=time.time()
-            if sent_ind!=0 : 
-                ## appending new features of current feature vector if not already in global
-                for k in list(local_keys) : 
-                    global_k=list(global_keys)
-                    if k not in global_k : 
-                        if FEATURE_DIC[k]!=0 : 
-                            GLOBAL_DIC[k]=FEATURE_DIC[k]
-                    else : 
-                        if GLOBAL_DIC[k]+FEATURE_DIC[k]!=0 : 
-                            GLOBAL_DIC[k]=GLOBAL_DIC[k] + FEATURE_DIC[k]
-            
-            print("sentence {} trained in {}".format(sent_ind,time.time()-t_start))
-            sent_ind=sent_ind+1
-            
-            
-        e=e+1
+                local_keys=list(FEATURE_DIC.keys())
+                feat_list=[(x,actual_tag,amax_tag) for x in feats]
 
+                
+                if actual_tag!= amax_tag : 
+                    MISTAKES+=1
+                
+                ## UPDATE THE WEIGHTS HERE.
+                
+                '''
+                    (f,b)
+                    (feature, actual_tag)
+                    (f,c)
+                    (feature, argmax_tag)
+                '''
+                for (f,b,c) in feat_list :  
+                    
+                    if b!=c : 
+                        SUM+=1
+                        if (f,b) in local_keys : 
+                            FEATURE_DIC[f,b]+=1
+                        else :
+                            FEATURE_DIC[f,b]=1
+                    
+                        if (f,c) in local_keys : 
+                            FEATURE_DIC[f,c]-=1
+                        else : 
+                            FEATURE_DIC[f,c]=-1
+                        
+                j=j+1                 
+            
+            
+           
+            
+            if epoch == 0 : 
+                WEIGHT_VECTOR.append(dict(list(FEATURE_DIC.items())))   
+            elif epoch>0 :
+                OLDER_FEATURE_DIC=WEIGHT_VECTOR[sent_ind]
+                CURRENT_FEATURE_DIC=FEATURE_DIC
+                SUM_FEATURE_DIC={}
+
+                
+                for a in OLDER_FEATURE_DIC.keys() : 
+                 
+                    SUM_FEATURE_DIC[a]=OLDER_FEATURE_DIC[a]+CURRENT_FEATURE_DIC[a]
+                    
+                
+            
+                WEIGHT_VECTOR[sent_ind]=SUM_FEATURE_DIC.copy()
+                
+                
+            sent_ind=sent_ind+1  
+            
+        print('Num of Mistakes=',MISTAKES)   
+        print('epoch {} ended in {}'.format(e,time.time()-epoch_start))
+        e=e+1
+        
         
     print("Training finished in ",time.time()-t1)
-    return GLOBAL_DIC
-                
+    return WEIGHT_VECTOR
+    #return FEATURE_DIC            
+            
+
+
 
 if __name__ == '__main__':
     optparser = optparse.OptionParser()
@@ -143,7 +181,28 @@ if __name__ == '__main__':
     tagset = perc.read_tagset(opts.tagsetfile)
     print("reading data ...", file=sys.stderr)
     train_data = perc.read_labeled_data(opts.trainfile, opts.featfile, verbose=False)
+    
     print("done.", file=sys.stderr)
-    feat_vec = perc_train(train_data, tagset, int(opts.numepochs))
-    perc.perc_write_to_file(feat_vec, opts.modelfile)
+    print(type(feat_vec))
+    #F={} 
+    #TESTING
+    F= defaultdict(int)
+    
+    for i in range(len(feat_vec)) : 
+        a=feat_vec[i].copy()
+        F.update(a)
+    
+    print(type(F))
+    feat_vec2=F.copy()
+    print(type(feat_vec2))
+    '''
+    cnt_item = 0
+    for key, value in feat_vec2.items() :
+        print (key, value)
+        cnt_item = cnt_item +1
+
+        if cnt_item == 30:
+            break
+    '''
+    perc.perc_write_to_file(feat_vec2, opts.modelfile)
 
