@@ -46,12 +46,13 @@ def perc_train(train_data, tagset, numepochs):
     # go through each sentence
     # >> INDEX 'j' TP KEEP TRACK OF THE J-TH SENTENCE
     j=0
-
+    feat_index=0
     words=[]
     labels=[]
     for (labeled_list, feat_list) in train_data:
+        print("NEW FOR")
         # **THE FIRST ITEM IN THE TUPLE IS THE LABELED LISTS**
-        
+        print(labeled_list[0])
         # # $$ WORDS FOR THE CURRENT SENTENCE $$
         # # >> x[1:n]
         # for itm in labeled_list:
@@ -68,35 +69,48 @@ def perc_train(train_data, tagset, numepochs):
 
         # print(labeled_list)
 
+        # >> Use Viterbi algorthim (perc_test) here on the labeled sentence
+        output = {} 
+        output = perc.perc_test(feat_vec, labeled_list, feat_list, tagset, tagset[0])
+        
         print("Len of feat_list: ", len(feat_list))
 
         # $$ GO THROUGH EACH FEATURE, STORE IN feat_vec $$
-        count=0
-        testbool=False
-        print(feat_list[2])
-        for ft in feat_list:
-            # print(ft)
-            # PUT FEATURE IF NOT IN THE feat_vec yet
-            if ft not in feat_vec.keys():
-                testbool = testbool or False
-                feat_vec[ft] = 0
-            else:
-                testbool = testbool or True
-
-            count+=1
-        print(count)
-        print(testbool)
         # $$$$
+        N=len(labeled_list)
+        for i in range(0, N):
+            print(">>>i FOR")
+            # print("\n".join(perc.conll_format(output, labeled_list)))
+            print("First two perc+test: ", output[0], output[1])
+            (feat_index, feats) = perc.feats_for_word(feat_index, feat_list)  
+            feat_list=[(x,labeled_list[i].split()[-1],output[0]) for x in feats]
+            for it in feat_list:
+                print(it)
 
-        # >> Use Viterbi algorthim (perc_test) here on the labeled sentence
-        # output = perc.perc_test(feat_vec, labeled_list, feat_list, tagset, tagset[0])
-        # print("\n".join(perc.conll_format(output, labeled_list)))
-        # print()
+            words=[]
+            labels=[]
+            # >> UPDATE 'j'
+            j+=1
 
-        words=[]
-        labels=[]
-        # >> UPDATE 'j'
-        j+=1
+            # count=0
+            # testbool=False
+            # print(feat_list[2])
+            # for ft in feat_list:
+            #     # print(ft)
+            #     # PUT FEATURE IF NOT IN THE feat_vec yet
+            #     if ft not in feat_vec.keys():
+            #         testbool = testbool or False
+            #         feat_vec[ft] = 0
+            #     else:
+            #         testbool = testbool or True
+
+            #     count+=1
+            # print(count)
+            # print(testbool)
+
+            print(">>>END i FOR")
+
+        print("END FOR")
 
 
     # print("Printing feat_vec...")
