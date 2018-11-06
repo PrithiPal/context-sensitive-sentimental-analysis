@@ -47,6 +47,8 @@ def perc_train(train_data, tagset, numepochs):
     FEATURE_DIC={}
     default_tag=tagset[0]
     WEIGHT_VECTOR=[]
+
+    history_list =[]
     e=0
     for epoch in range(numepochs) : 
         print("epoch {}".format(e))
@@ -58,8 +60,6 @@ def perc_train(train_data, tagset, numepochs):
         for (sent_labels,sent_features) in train_data : 
             
             #print("sentence=",sent_labels)
-            
-            
             #argmax_tag=[]
              
             if epoch==0 : 
@@ -76,7 +76,8 @@ def perc_train(train_data, tagset, numepochs):
             labels.insert(0, '_B-1 _B-1 _B-1')
             labels.insert(0, '_B-2 _B-2 _B-2') # first two 'words' are _B-2 _B-1
             labels.append('_B+1 _B+1 _B+1')
-            labels.append('_B+2 _B+2 _B+2') # last two 'words' are _B+1 _B+2  
+            labels.append('_B+2 _B+2 _B+2') # last two 'words' are _B+1 _B+2 
+            #N is the number of words in a sentence 
             N = len(labels)   
             
             SUM=0
@@ -106,7 +107,12 @@ def perc_train(train_data, tagset, numepochs):
                 
                 ## UPDATE THE WEIGHTS HERE.
                 
-               
+                '''
+                    (f,b)
+                    (feature, actual_tag)
+                    (f,c)
+                    (feature, argmax_tag)
+                '''
                 for (f,b,c) in feat_list :  
                     
                     if b!=c : 
