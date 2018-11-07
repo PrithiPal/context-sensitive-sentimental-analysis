@@ -4,3 +4,4 @@ output*
 chunk.py
 *.pyc
 __pycache__
+.ipynb_checkpoints
