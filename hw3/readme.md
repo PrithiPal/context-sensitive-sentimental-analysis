@@ -9,7 +9,7 @@
 
 ## Training phase
 
-    python3 default.py > default.model
+    python3 chunk.py > default.model
 
 ## Testing and Evaluation phase
 
@@ -22,7 +22,7 @@ OR
 
 ## Options
 
-    python3 default.py -h
+    python3 chunk.py -h
 
 This shows the different options you can use in your training
 algorithm implementation.  In particular the -n option will let you
@@ -33,42 +33,35 @@ your code with different number of iterations.
 
 ## Baseline
 
-    $ time python3 chunk.py -e 10 -m baseline.model
+    $  python3 chunk.py -e 10 -m data/baseline.model
     reading data ...
     done.
-    number of mistakes: 5620
-    number of mistakes: 3962
-    number of mistakes: 2930
-    number of mistakes: 2284
-    number of mistakes: 1768
-    number of mistakes: 1390
-    number of mistakes: 1226
-    number of mistakes: 1031
-    number of mistakes: 810
-    number of mistakes: 707
+    epoch 0
+    epoch 1
+    epoch 2
+    epoch 3
+    epoch 4
+    epoch 5
+    epoch 6
+    epoch 7
+    epoch 8
+    epoch 9
+    Training finished in  934.457836151123
 
-    real        23m49.039s
-    user        23m33.333s
-    sys 0m5.446s
-
-The time was computed on a 1.4 GHz Intel Core i7 with 16 GB 1867
-MHz LPDDR3 on battery power. The baseline scores F1 score of 92.37
-on this dataset. However, based on implementation details your score
-might well be slightly higher or lower.
-
+    Note: The score below is based on ((e +1)/2) weight assignment
     $ python3 perc.py -m baseline.model | python3 score_chunks.py 
-    reading data ... 
+    reading data ...
     done.
-    processed 500 sentences with 10375 tokens and 5783 phrases; found phrases: 5747; correct phrases: 5325
-                 ADJP: precision:  70.83%; recall:  68.69%; F1:  69.74; found:     96; correct:     99  
-                 ADVP: precision:  74.00%; recall:  73.27%; F1:  73.63; found:    200; correct:    202 
-                CONJP: precision:  66.67%; recall:  80.00%; F1:  72.73; found:      6; correct:      5   
-                 INTJ: precision:   0.00%; recall:   0.00%; F1:   0.00; found:      0; correct:      1   
-                   NP: precision:  93.66%; recall:  92.80%; F1:  93.23; found:   2998; correct:   3026
-                   PP: precision:  96.41%; recall:  96.81%; F1:  96.61; found:   1226; correct:   1221
-                  PRT: precision:  68.42%; recall:  59.09%; F1:  63.41; found:     19; correct:     22  
-                 SBAR: precision:  76.52%; recall:  82.24%; F1:  79.28; found:    115; correct:    107 
-                   VP: precision:  93.28%; recall:  92.18%; F1:  92.73; found:   1087; correct:   1100
-    accuracy:  94.87%; precision:  92.66%; recall:  92.08%; F1:  92.37
-    Score: 92.37
+    processed 500 sentences with 10375 tokens and 5783 phrases; found phrases: 5876; correct phrases: 5231
+                 ADJP: precision:  54.55%; recall:  54.55%; F1:  54.55; found:     99; correct:     99
+                 ADVP: precision:  65.02%; recall:  78.22%; F1:  71.01; found:    243; correct:    202
+                CONJP: precision:  33.33%; recall:  40.00%; F1:  36.36; found:      6; correct:      5
+                 INTJ: precision:   0.00%; recall:   0.00%; F1:   0.00; found:      0; correct:      1
+                   NP: precision:  89.43%; recall:  91.11%; F1:  90.26; found:   3083; correct:   3026
+                   PP: precision:  96.93%; recall:  95.82%; F1:  96.38; found:   1207; correct:   1221
+                  PRT: precision:  71.43%; recall:  45.45%; F1:  55.56; found:     14; correct:     22
+                 SBAR: precision:  73.33%; recall:  82.24%; F1:  77.53; found:    120; correct:    107
+                   VP: precision:  89.86%; recall:  90.18%; F1:  90.02; found:   1104; correct:   1100
+    accuracy:  94.18%; precision:  89.02%; recall:  90.45%; F1:  89.73
+    Score: 89.73  
 
