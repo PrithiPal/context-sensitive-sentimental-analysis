@@ -96,19 +96,19 @@ def perc_train(train_data, tagset, numepochs):
                 for (f,b,c) in feat_list :  
                     if b!=c : 
                         if (f,b) in FEATURE_DIC : 
-                            #FEATURE_DIC[(f,b)]=FEATURE_DIC[(f,b)]+1
-                            FEATURE_DIC[(f,b)]=FEATURE_DIC[(f,b)]+ (e +1)/2
+                            FEATURE_DIC[(f,b)]=FEATURE_DIC[(f,b)]+1
+                            #FEATURE_DIC[(f,b)]=FEATURE_DIC[(f,b)]+ (e +1)/2
                         else : 
-                            FEATURE_DIC[(f,b)]= (e +1)/2
-                            #FEATURE_DIC[(f,b)]=1
+                            #FEATURE_DIC[(f,b)]= (e +1)/2
+                            FEATURE_DIC[(f,b)]=1
                             #FEATURE_DIC[(f,b)]= 0  
                     
                         if (f,c) in FEATURE_DIC : 
-                            #FEATURE_DIC[(f,c)]=FEATURE_DIC[(f,c)]-1
-                            FEATURE_DIC[(f,c)]=FEATURE_DIC[(f,c)] - (e +1)/2
+                            FEATURE_DIC[(f,c)]=FEATURE_DIC[(f,c)]-1
+                            #FEATURE_DIC[(f,c)]=FEATURE_DIC[(f,c)] - (e +1)/2
                         else : 
-                            #FEATURE_DIC[(f,c)]=-1
-                            FEATURE_DIC[(f,c)]= -(e +1)/2
+                            FEATURE_DIC[(f,c)]=-1
+                            #FEATURE_DIC[(f,c)]= -(e +1)/2
                             #FEATURE_DIC[(f,c)]= 0 
 
                 #check next word with its argmax tag     
