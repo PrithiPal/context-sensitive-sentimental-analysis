@@ -1,0 +1,41 @@
+Things done : 
+
+
+Analysis : 
+1. Read 2002 Colln Paper
+2. Read the anoop's report for Perceptron algorithm
+3. Read the Voting representation paper. (we did'nt implemented it but I thoughly studied it and made plan as soon as I might have got baseline running.)
+
+Code : 
+
+1. Wrote the original FEATURE_DIC code. (took too much time)
+2. Wrote another implementation WEIGHT_VECTOR code (good accuracy sentence wise but did not generalize inter-sentence)
+3. Switched to one dict feat_vec FEATURE_DIC implementation, corrected mistake and reimplemented it. 
+4. Created the chunks.ipynb, tested code on it and documented the development of solution. 
+Others : 
+
+
+1. Created the chunks.ipynb, tested code on it and documented the development of solution. 
+2. Managed the group and keeping informed of the current development going on.
+3. Helped by Oscar only towards identification of bottlenecks and improvements.
+    3.1 Sequence corrected with correct iteration(comparing anoop's update example with ours )
+    
+    
+Otherwise, Please look at the commit history to see how I went through the development of solution.
+
+The main bottleneck was programming specific which is the use of .keys(). If I had found it earlier, I had plans to implement the Bigram as well as the Voting representation.
+
+
+
+If I had time, I think the voting representation could have done like follows : 
+
+1. Make the W set, using the approach SP+Lex-WCH (frequencies for word,pos pairs) and selecting words with freq > THRESHOLD (papers says 100)
+2. Make a function to transform input.txt/input.feats.txt and dev.txt/dev.feats.txt into different repr. which is 
+
+    p , p-y (if word not in W)
+    w-p, w-p-y (if word in W)
+3. update the read_labeled_data function. because now we have two columns instead of three 
+4. Run the score_chunk code and see the results. 
+
+
+
