@@ -1,0 +1,30 @@
+Summary:
+	-discussed baseline approach with teammate
+	-provided feedback to teamate so that we could improve on the accucary of the model 
+	-tested and debugged teammate's code for baseline
+	-analyzed baseline model performaces
+	-notetaking
+
+[Nov 6]
+	-debugged with teammate
+	-added documentation in chunk.py
+	-tested the code with history tag pairs
+	-generated two models(chunk_v3_e5.model and chunk_v3_e10.model) using the new weight assignment 
+	-tidy up chunk.py
+
+[Nov 5]
+	-discussed the weighting problem in our code
+	-reviewed teammate's new code and provided feedback
+
+[Nov 4]
+	-invested time in neural network approach
+	-peer viewing teammate's code
+
+[Nov 3]
+	-Tested give programs
+	-discussed implementation with teammate
+
+[Oct 21]
+    -HW3 set up
+    -read hw instruction
+    -tested given python programs
