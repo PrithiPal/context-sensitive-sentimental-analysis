@@ -77,6 +77,7 @@ def perc_train(train_data, tagset, numepochs):
             labels.insert(0, '_B-2 _B-2 _B-2') # first two 'words' are _B-2 _B-1
             labels.append('_B+1 _B+1 _B+1')
             labels.append('_B+2 _B+2 _B+2') # last two 'words' are _B+1 _B+2 
+
             #N is the number of words in a sentence 
             N = len(labels)   
             
@@ -85,15 +86,23 @@ def perc_train(train_data, tagset, numepochs):
             feat_index=0
             j=0
             for i in range(2, N-2):
-                
                 (feat_index, feats) = perc.feats_for_word(feat_index, sent_features)  
-               # print(feats)
+                # print(feats)
+                prev_tag = ""
+                if len(history_list) > 0:
+                    #if the previous tag is a B-CHUNK  tag
+                    if(history_list[len(history_list) - 1][:1] == 'B'):
+                        #print(history_list[len(history_list) - 1])
+                        #print(len(history_list) - 1)
+                        #set previous tag
+                        prev_tag = history_list[len(history_list) - 1]
+
                 fields = labels[i].split()    
-                
-                
                 word = fields[0]
                 actual_tag=fields[2]    
+                history_list.append(actual_tag)
                
+
         
                 #print("word_index = {}, word = {}, actual_tag = {}, argmax_tag= {}".format(i,word,actual_tag,argmax_tag[i])
                 amax_tag=argmax_tag[j]
@@ -126,12 +135,12 @@ def perc_train(train_data, tagset, numepochs):
                             FEATURE_DIC[f,c]-=1
                         else : 
                             FEATURE_DIC[f,c]=-1
-                        
-                j=j+1                 
-            
-            
-           
-            
+                #end for (f,b,c) in feat_list        
+                j=j+1           
+
+            #end for i in range(2, N-2):
+
+            #Update WEIGHT_VECTOR after one sentence
             if epoch == 0 : 
                 WEIGHT_VECTOR.append(dict(list(FEATURE_DIC.items())))   
             elif epoch>0 :
@@ -139,18 +148,14 @@ def perc_train(train_data, tagset, numepochs):
                 CURRENT_FEATURE_DIC=FEATURE_DIC
                 SUM_FEATURE_DIC={}
 
-                
                 for a in OLDER_FEATURE_DIC.keys() : 
-                 
                     SUM_FEATURE_DIC[a]=OLDER_FEATURE_DIC[a]+CURRENT_FEATURE_DIC[a]
-                    
-                
-            
+  
                 WEIGHT_VECTOR[sent_ind]=SUM_FEATURE_DIC.copy()
-                
-                
+                                
             sent_ind=sent_ind+1  
-            
+
+        #end for (sent_labels,sent_features) in train_data
         print('Num of Mistakes=',MISTAKES)   
         print('epoch {} ended in {}'.format(e,time.time()-epoch_start))
         e=e+1
@@ -160,9 +165,6 @@ def perc_train(train_data, tagset, numepochs):
     return WEIGHT_VECTOR
     #return FEATURE_DIC            
             
-
-
-
 if __name__ == '__main__':
     optparser = optparse.OptionParser()
     optparser.add_option("-t", "--tagsetfile", dest="tagsetfile", default=os.path.join("data", "tagset.txt"), help="tagset that contains all the labels produced in the output, i.e. the y in \phi(x,y)")
@@ -181,8 +183,9 @@ if __name__ == '__main__':
     tagset = perc.read_tagset(opts.tagsetfile)
     print("reading data ...", file=sys.stderr)
     train_data = perc.read_labeled_data(opts.trainfile, opts.featfile, verbose=False)
-    
     print("done.", file=sys.stderr)
+
+    feat_vec = perc_train(train_data, tagset, int(opts.numepochs))
     print(type(feat_vec))
     #F={} 
     #TESTING
