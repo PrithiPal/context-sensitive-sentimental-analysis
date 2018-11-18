@@ -20,9 +20,14 @@ if opts.logfile:
 
 sys.stderr.write("Training with Dice's coefficient...")
 bitext = [[sentence.strip().split() for sentence in pair] for pair in islice(zip(open(f_data), open(e_data)), opts.num_sents)]
+
+
 f_count = defaultdict(int)
 e_count = defaultdict(int)
 fe_count = defaultdict(int)
+
+
+
 for (n, (f, e)) in enumerate(bitext):
   for f_i in set(f):
     f_count[f_i] += 1
@@ -32,6 +37,9 @@ for (n, (f, e)) in enumerate(bitext):
     e_count[e_j] += 1
   if n % 500 == 0:
     sys.stderr.write(".")
+    
+  
+
 
 dice = defaultdict(int)
 for (k, (f_i, e_j)) in enumerate(fe_count.keys()):
