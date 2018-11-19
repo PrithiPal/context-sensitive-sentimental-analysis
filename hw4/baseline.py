@@ -24,7 +24,7 @@ if opts.logfile:
     logging.basicConfig(filename=opts.logfile, filemode='w', level=logging.INFO)
 
 if verbose:
-    print("Training with Dice's coefficient...\n")
+    sys.stderr.write("Training with Dice's coefficient...\n")
 
 bitext = [[sentence.strip().split() for sentence in pair] for pair in islice(zip(open(f_data), open(e_data)), opts.num_sents)]
 e_count = defaultdict(int)
@@ -35,8 +35,10 @@ t = defaultdict(int)
 
 
 if verbose:
-    print('Updating the fe_count and e_count dicts')
+    sys.stderr.write('Updating the fe_count and e_count dicts\n')
 
+
+## POPULATING f_count, e_count and fe_count
 for (n, (f, e)) in enumerate(bitext):
   for f_i in set(f):
     f_count[f_i] += 1
@@ -50,7 +52,7 @@ for (n, (f, e)) in enumerate(bitext):
 
 ## INITIALIZING THE t
 if verbose:
-    print('initializing t')
+    sys.stderr.write('initializing t\n')
 for (n, (f, e)) in enumerate(bitext):
     for fi in f : 
         for ej in e : 
@@ -60,14 +62,14 @@ for (n, (f, e)) in enumerate(bitext):
         
         
 if verbose: 
-    print('Training baseline model')             
+    sys.stderr.write('Training baseline model\n')             
+
+
 k=0
-
-
 ## POPULATING THE T 
-while k<1 : 
+while k<2 : 
     if verbose:
-        print(' Iteration {} ..... '.format(k))
+        sys.stderr.write(' Iteration {} ..... \n'.format(k))
     k+=1
     for (n, (f, e)) in enumerate(bitext):
         for fi in f : 
@@ -78,26 +80,22 @@ while k<1 :
                 
                 c=t[(fi,ej)]/z
                 fe_count[(fi,ej)]+=c
-                e_count[(fi,ej)]+=c
+                e_count[ej]+=c
 
     for (f,e) in fe_count : 
-        t[(f,e)]=fe_count[(f,e)]/e_count[(f,e)]
+        t[(f,e)]=fe_count[(f,e)]/e_count[e]
       
 
-
-
-if verbose:
-    print(str(t))
-    #print(str(e_count))
+#if verbose:
+    #sys.stderr.write(str(t))
+    #sys.stderr.write(str(e_count))
         
 if verbose:
-    print('Training Finished.')
+    sys.stderr.write('Training Finished.\n')
+    sys.stderr.write('Finding best alignments\n')
+
+
 ## FINDING THE BEST ALIGNMENT
-
-if verbose:
-    print('Finding best alignments')
-
-
 for (f, e) in bitext:
     for f,fi in enumerate(f)  :
         bestp=0
