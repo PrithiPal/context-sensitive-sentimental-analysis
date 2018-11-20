@@ -44,56 +44,69 @@ if verbose:
     sys.stderr.write('Updating the fe_count and e_count dicts\n')
 
 
-## POPULATING f_count, e_count and fe_count
+
+# FRENCH VOCAB SIZE
+french_vocab_count=0
+# f_uniquewords=dict() # set of unique french words (type dict)
+f_uniquewords=set() # set of unique french words ##(type set is easier to work with)##
 for (n, (f, e)) in enumerate(bitext):
   for f_i in set(f):
-    f_count[f_i] += 1
-    for e_j in set(e):
-      fe_count[(f_i,e_j)] += 1
-  for e_j in set(e):
-    e_count[e_j] += 1
-  if n % 500 == 0:
-    sys.stderr.write(".")
+    # if f_i not in f_uniquewords.keys():   # ##if dict is used
+    #     f_uniquewords[f_i]=1              # ##if dict is used
+    f_uniquewords.add(f_i)
+
+french_vocab_count=len(f_uniquewords)
+# sys.stderr.write("Len(f_uniquewords): " + str(len(f_uniquewords)) + "\n")
+
+
+
+# Null value
+nullVal="<null>"
+
 
 
 ## INITIALIZING THE t
 if verbose:
     sys.stderr.write('initializing t\n')
-for (n, (f, e)) in enumerate(bitext):
+for (i, (f, e)) in enumerate(bitext):
     for fi in f : 
-        for ej in e : 
+        for ej in e:
             #sys.stderr.write('{} -> {} \n'.format(fi,ej))
-            t[(fi,ej)]=1/len(f)
+            t[(fi,ej)]=1/french_vocab_count
             
         
         
 if verbose: 
     sys.stderr.write('Training baseline model\n')             
 
-
-k=0
 ## POPULATING THE T 
+
+
 
 ## PARAM FOR THE WORD-ALIGNMENT MODEL.
 smoothing=True
-NUM_ITERATIONS=1
+NUM_ITERATIONS=5  # ## CHANGE TO 5 BEFORE SUBMITTING ##
+k=0
+
 
 ## If smoothing
 if smoothing:
     sys.stderr.write('With Smoothing\n')
-V=10000 ## added vocab size; value borrowed from the research paper. 
+
+
+
+# french_vocab_count=10000 ## added vocab size; value borrowed from the research paper. 
 n=0.01 ## added count values borrowed from the research paper. 
 
-# Null value
-nullVal="<null>"
+
 
 while k<NUM_ITERATIONS : 
     if verbose:
         sys.stderr.write(' Iteration {} ..... \n'.format(k))
     k+=1
-    for (n, (f, e)) in enumerate(bitext):
+    for (i, (f, e)) in enumerate(bitext): #(n, (f, e)) in enumerate(bitext):
         for fi in f : 
-            z=0
+            # z=0
             # Include Null before anything else
             z=t[(fi,nullVal)]
             for ej in e:
@@ -117,7 +130,7 @@ while k<NUM_ITERATIONS :
     for (f,e) in fe_count : 
         if smoothing:
             ## smoothened observed counts
-            t[(f,e)]=( fe_count[(f,e)]+n )/( e_count[e]+(n*V) ) 
+            t[(f,e)]=( fe_count[(f,e)]+n )/( e_count[e]+(n*french_vocab_count) ) 
         else:
             ## Default baseline counts 
             t[(f,e)]=fe_count[(f,e)]/e_count[e]
@@ -138,7 +151,7 @@ if verbose:
 ## FINDING THE BEST ALIGNMENT
 for (f, e) in bitext:
     for f,fi in enumerate(f)  :
-        bestp=0
+        # bestp=0
         # Make Null the default bestp
         bestp=t[(fi,nullVal)]
         bestj=0
@@ -149,7 +162,7 @@ for (f, e) in bitext:
         # ONLY OUTPUT IF bestj IS NOT 0 
         # - i.e when bestj wasn't changed,
         #       meaning t[(fi,ej)] wasn't better than t[(fi,nullVal)])
-        if bestj!=0:
+        if bestj>0:
             sys.stdout.write("%i-%i " % (f,bestj))
         #     sys.stderr.write('NULL ')
         #     break
