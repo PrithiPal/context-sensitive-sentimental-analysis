@@ -1,0 +1,2 @@
+- Discussed with prithi about possible improvements from the baseline (adding null values & HMM-based alignment model)
+- Helped and implemented the improvement by adding null values to the source sentence
