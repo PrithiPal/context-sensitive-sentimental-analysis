@@ -1,0 +1,9 @@
+default.model
+baseline.model
+output*
+*.pyc
+__pycache__
+venv
+.DS_Store
+*.egg-info
+.ipynb_checkpoints
