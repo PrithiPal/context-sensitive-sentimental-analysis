@@ -17,7 +17,8 @@ YEARS = map(str, range(1850, 2000, 10))
 ## THE FOLLOWING CAN BE REPLACED BY DOWNLOADING APPROPRIATE RESOURCES AND CHANGING PATHS:
 
 #from https://code.google.com/p/word2vec/
-GOOGLE_EMBEDDINGS = '/dfs/scratch0/gigawordvecs/GoogleNews-vectors-negative300_transformed.txt'
+GOOGLE_EMBEDDINGS = './word2vec/GoogleNews-vectors-negative300.bin'
+GLOVE_EMBEDDINGS = './example_embeddings/glove.6B.100d.txt'
 #from http://www.cis.lmu.de/~sascha/Ultradense/
 TWITTER_EMBEDDINGS = '/dfs/scratch0/gigawordvecs/twitter_lower_cw1_sg400_transformed.txt'
 

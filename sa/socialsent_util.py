@@ -26,7 +26,7 @@ def load_pickle(fname):
 
 
 def write_pickle(o, fname):
-    with open(fname, 'w') as f:
+    with open(fname, 'wb') as f:
         cPickle.dump(o, f, -1)
 
 
