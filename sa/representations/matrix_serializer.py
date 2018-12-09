@@ -1,13 +1,13 @@
 import numpy as np
 import os
-import representations.socialsent_util
+import socialsent_util
 
 def load_matrix(f):
     if not f.endswith('.bin'):
         f += ".bin"
     import pyximport
     pyximport.install(setup_args={"include_dirs": np.get_include()})
-    from socialsent.representations import sparse_io
+    from representations import sparse_io
     return sparse_io.retrieve_mat_as_coo(f).tocsr()
 
 def save_vocabulary(path, vocab):
