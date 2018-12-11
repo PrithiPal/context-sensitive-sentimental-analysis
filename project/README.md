@@ -1,0 +1,13 @@
+CMPT 413 FINAL PROJECT
+
+PROJECT TITLE : CONTEXT-SENSITIVE LEXICON ANLAYSIS
+
+GROUP MEMBERS : 
+
+1. PRITHI PAL SINGH 
+2. OSCAR ZHEN 
+3. JOSH DOMNIGUEZ
+
+THE MAIN DIRECTORY HAS project.ipynb. the documentation and main code implementation is there.
+
+
