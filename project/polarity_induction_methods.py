@@ -156,11 +156,11 @@ def graph_propagate(embeddings, positive_seeds, negative_seeds, **kwargs):
     neg_pols = {w:1.0 for w in negative_seeds}
     for w in positive_seeds:
         neg_pols[w] = 0.0
-    for w in util.logged_loop(index):
+    for w in socialsent_util.logged_loop(index):
         if w not in positive_seeds and w not in negative_seeds:
             pos_pols[w] = sum(pos_alpha[index[w], index[seed]] for seed in positive_seeds if seed in index) 
             neg_pols[w] = sum(neg_alpha[index[w], index[seed]] for seed in negative_seeds if seed in index)
-    beta = np.sum(pos_pols.values()) / np.sum(neg_pols.values())
+    beta = np.sum( list(pos_pols.values())) / np.sum( list(neg_pols.values()))
     for w in index:
         polarities[w] = pos_pols[w] - beta * neg_pols[w]
     return polarities
