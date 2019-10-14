@@ -1,5 +1,6 @@
 default.model
 baseline.model
+chunk.ipynb
 output*
 *.pyc
 __pycache__
